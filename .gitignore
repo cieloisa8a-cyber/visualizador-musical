@@ -4,3 +4,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 .env
+
+# Archivos temporales con timestamps
+*-player-script.js
+[0-9]*-*.js
