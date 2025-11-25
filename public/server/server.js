@@ -14,26 +14,29 @@ app.use(cors({
 // Servir archivos estáticos (HTML, CSS, JS, imágenes, audio)
 app.use(express.static(path.join(__dirname, '../../')));
 
-// Crear agente personalizado con cookies para evitar rate limits
-const agent = ytdl.createAgent();
-
-// Configurar opciones de ytdl con agente personalizado y headers mejorados
+// Configurar opciones simplificadas (sin agente personalizado que puede causar problemas)
 const ytdlOptions = {
-    agent,
     requestOptions: {
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate, br',
+            'DNT': '1',
             'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
             'Sec-Fetch-Dest': 'document',
             'Sec-Fetch-Mode': 'navigate',
             'Sec-Fetch-Site': 'none',
-            'Upgrade-Insecure-Requests': '1'
+            'Sec-Fetch-User': '?1',
+            'Cache-Control': 'max-age=0'
         }
     }
 };
+
+// Cache simple para evitar peticiones repetidas
+const videoCache = new Map();
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
 
 // Endpoint para obtener información del video
 app.get("/youtube/info", async (req, res) => {
@@ -46,43 +49,44 @@ app.get("/youtube/info", async (req, res) => {
 
         console.log(`🔍 Obteniendo info de: ${url}`);
 
-        // Intentar con reintentos en caso de error 429
-        let retries = 3;
-        let info;
-        
-        while (retries > 0) {
-            try {
-                info = await ytdl.getInfo(url, ytdlOptions);
-                break;
-            } catch (err) {
-                retries--;
-                if (retries === 0) throw err;
-                console.log(`⚠️ Reintentando... (${retries} intentos restantes)`);
-                await new Promise(resolve => setTimeout(resolve, 2000)); // esperar 2 segundos
-            }
+        // Verificar caché primero
+        const cachedData = videoCache.get(url);
+        if (cachedData && (Date.now() - cachedData.timestamp < CACHE_DURATION)) {
+            console.log(`📦 Usando caché para: ${cachedData.title}`);
+            return res.json(cachedData.data);
         }
 
+        // Solo obtener info básica (más rápido, menos detección)
+        const info = await ytdl.getBasicInfo(url, ytdlOptions);
         const title = info.videoDetails.title || "YouTube Audio";
         const duration = info.videoDetails.lengthSeconds || 0;
         const thumbnail = info.videoDetails.thumbnails?.[0]?.url || "";
 
-        res.json({
+        const response = {
             title: title,
             duration: duration,
             thumbnail: thumbnail
+        };
+
+        // Guardar en caché
+        videoCache.set(url, {
+            data: response,
+            title: title,
+            timestamp: Date.now()
         });
 
+        res.json(response);
         console.log(`✅ Info obtenida: ${title}`);
 
     } catch (err) {
         console.error("❌ Error obteniendo info de YouTube:", err.message);
         
-        if (err.message.includes('429')) {
+        if (err.message.includes('429') || err.statusCode === 429) {
             res.status(429).json({ 
-                error: "YouTube está limitando las peticiones. Intenta de nuevo en unos minutos o usa un archivo local/demo." 
+                error: "YouTube temporalmente no disponible. Usa los demos incluidos o carga un archivo MP3 local." 
             });
         } else {
-            res.status(500).json({ error: "No se pudo obtener información del video: " + err.message });
+            res.status(500).json({ error: "Error: " + err.message });
         }
     }
 });

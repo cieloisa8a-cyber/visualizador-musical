@@ -364,7 +364,23 @@ botonCargarYoutube.addEventListener("click", async () => {
     } catch (e) {
         console.error('❌ Error cargando audio de YouTube:', e);
         displayNombreArchivo.value = "No hay archivo seleccionado";
-        alert("No se pudo cargar el video. Verifica que:\n1. El enlace sea válido\n2. El servidor esté funcionando (npm start)\n3. El video esté disponible");
+        
+        // Mensaje más específico según el error
+        let mensaje = "No se pudo cargar el video de YouTube.\n\n";
+        if (e.message && e.message.includes('429')) {
+            mensaje += "YouTube está limitando las peticiones.\n\n";
+            mensaje += "💡 Alternativas:\n";
+            mensaje += "• Usa los 8 demos incluidos (botón 'Probar con un demo')\n";
+            mensaje += "• Carga un archivo MP3/WAV local\n";
+            mensaje += "• Intenta de nuevo en 5-10 minutos";
+        } else {
+            mensaje += "Verifica que:\n";
+            mensaje += "1. El enlace sea válido\n";
+            mensaje += "2. El video esté disponible en tu región\n";
+            mensaje += "3. No sea contenido restringido";
+        }
+        
+        alert(mensaje);
         
         // Restaurar botón de carga
         botonCargarYoutube.disabled = false;
