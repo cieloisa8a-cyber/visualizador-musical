@@ -1,0 +1,349 @@
+ <!doctype html>
+ <html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Visualizador Musical Web — Landing</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="public/styles/style_landing.css">
+  </head>
+ <body>
+ 
+   <header class="site-header" role="banner">
+     <div class="wrap">
+       <a class="brand" href="#hero">Visualizador Musical Web</a>
+       <nav role="navigation" aria-label="Menú principal" class="main-nav">
+         <a href="#hero">Inicio</a>
+         <a href="#como-se-ve">¿Cómo se ve?</a>
+         <a href="#como-funciona">Cómo funciona</a>
+         <a href="#beneficios">Beneficios</a>
+         <a href="#casos">Casos de Uso</a>
+         <a href="#instrucciones">Instrucciones</a>
+         <a href="#cta-final">Probar</a>
+       </nav>
+ 
+       <div class="header-actions">
+        <button id="open-technical" class="btn ghost" title="Abrir info técnica">¿Qué es?</button>
+      </div>
+      </div>
+   </header>
+ 
+   <main id="main">
+    <section id="hero" class="hero" role="region" aria-label="Portada">
+      <div class="wrap hero-grid">
+        <article class="hero-text">
+          <h1>Transforma tu música en arte visual</h1>
+          <p class="lead">Colores, formas y movimientos que reaccionan a cada ritmo de tu canción.</p>
+
+          <div class="hero-cta">
+            <a href="home.html" class="btn primary" id="">Subir tu canción</a>
+            <button class="btn" id="demoBtn">Probar una demo</button>
+            <button class="btn" id="examplesBtn">Ideas de uso</button>
+          </div>
+
+          <p class="muted">Visualizaciones únicas creadas a partir de tu música.</p>
+        </article>
+
+        <aside class="hero-visual" aria-hidden="false">
+          <img src="public/assets/imagenes/imagen_home.png" alt="Visualización musical - ejemplo" class="hero-image">
+        </aside>
+      </div>
+    </section>
+ 
+
+
+  <!-- Modal: Paletas de colores (slider) -->
+  <div id="modal-palettes" class="modal palette-modal" aria-hidden="true" role="dialog" aria-label="Paletas de colores">
+    <div class="modal-inner palette-content" role="document">
+      <button class="modal-close close-palette" id="closePalettes" aria-label="Cerrar">✕</button>
+      <h3>Paletas de colores</h3>
+
+      <div class="palette-slider">
+        <div class="slides" id="paletteSlides">
+          <div class="slide" data-title="Paleta Neón">
+            <img src="public/assets/imagenes/Paleta3.png" alt="Paleta Neón" />
+            <div class="slide-title">Paleta Neón</div>
+          </div>
+
+          <div class="slide" data-title="Paleta Cálida">
+            <img src="public/assets/imagenes/Paleta1.png" alt="Paleta Cálida" />
+            <div class="slide-title">Paleta Cálida</div>
+          </div>
+
+          <div class="slide" data-title="Paleta Fría">
+            <img src="public/assets/imagenes/Paleta2.png" alt="Paleta Fría" />
+            <div class="slide-title">Paleta Fría</div>
+          </div>
+        </div>
+
+        <div class="palette-controls">
+          <button class="slider-btn" id="prevPalette" aria-label="Anterior">◀</button>
+          <button class="slider-btn" id="nextPalette" aria-label="Siguiente">▶</button>
+        </div>
+
+        <div class="modal-actions" style="margin-top:14px;">
+          <button type="button" class="btn ghost" id="closePalettes2">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+     <section id="como-se-ve" class="section dark" role="region" aria-label="Cómo se ve">
+       <div class="wrap">
+         <h2>¿Cómo se ve?</h2>
+         <p class="muted">El diseño es limpio, moderno y envolvente. El usuario verá un lienzo donde los gráficos reaccionan automáticamente a la música:</p>
+ 
+         <ul class="visual-features">
+           <li>Colores que cambian según la emoción</li>
+           <li>Formas que se expanden con los bajos</li>
+           <li>Ondas suaves que siguen la melodía</li>
+           <li>Partículas que vibran al ritmo</li>
+         </ul>
+ 
+         <div class="section-ctas">
+           <button class="btn" id="verPaletas">Ver paletas de colores</button>
+
+         </div>
+ 
+         <div class="canvas-mockup" role="img" aria-label="Lienzo de visualización">
+           <img src="public/assets/imagenes/Visualizador1.png" alt="Lienzo visualización" />
+           <img src="public/assets/imagenes/Visualizador2.png" alt="Lienzo visualización" />
+        
+         </div>
+       </div>
+     </section>
+ 
+     <section id="como-funciona" class="section container" role="region" aria-label="Cómo funciona">
+       <div class="wrap">
+         <h2>¿Cómo funciona?</h2>
+         <ol class="steps">
+           <li><strong>Sube tu canción.</strong></li>
+           <li><strong>El sistema analiza</strong> las frecuencias y ritmos (FFT).</li>
+           <li><strong>Se genera</strong> la visualización en tiempo real.</li>
+           <li><strong>Personaliza</strong> estilos, colores y patrones.</li>
+         </ol>
+ 
+         <div class="section-ctas">
+           <!--<button id="uploadYourAudio" class="btn primary">¡Quiero Probar!</button>-->
+           <a href="home.html" class="btn primary" id="">Subir tu canción</a>
+         </div>
+       </div>
+     </section>
+
+     <section id="beneficios" class="section" role="region" aria-label="Beneficios">
+       <div class="wrap split">
+         <div class="card">
+           <h3>Beneficios</h3>
+           <ul>
+             <li>Visualizaciones únicas creadas 100% a partir de tu música.</li>
+             <li>Perfecta para videos, reels, TikToks, streams y presentaciones.</li>
+             <li>No requiere experiencia técnica.</li>
+             <li>Relajante y estética.</li>
+             <li>Útil para analizar sonido y frecuencias.</li>
+             <li>Inclusiva para personas con dificultades auditivas.</li>
+           </ul>
+         </div>
+ 
+         <div class="card inset">
+           <h3>Ideal para</h3>
+           <p>Videos, presentaciones, contenidos sociales y análisis educativo.</p>
+         </div>
+       </div>
+     </section>
+ 
+     <section id="por-que" class="section dark" role="region" aria-label="Por qué usarla">
+       <div class="wrap">
+         <h2>¿Por qué usarla?</h2>
+         <p>
+           Porque transforma la música en arte. Cada visualización es emocional, fluida y diferente.
+           Esta plataforma te permite vivir la música de una manera completamente nueva, creativa y compartible.
+         </p>
+ 
+         <div class="section-ctas">
+           <!-- <button class="btn primary">Lo quiero probar</button> -->
+           <a href="home.html" class="btn primary" id="crearVisual">Crear mi visualización ahora</a>
+           <button class="btn">Compartir con un amigo</button>
+         </div>
+       </div>
+     </section>
+ 
+     <section id="publico" class="section" role="region" aria-label="Público objetivo">
+       <div class="wrap">
+         <h2>Público objetivo</h2>
+         <ul class="target-list">
+           <li>Creadores de contenido</li>
+           <li>Músicos y productores</li>
+           <li>Diseñadores y artistas</li>
+           <li>Estudiantes y profesores</li>
+           <li>Personas con dificultades auditivas</li>
+           <li>Amantes de la música y el arte</li>
+         </ul>
+       </div>
+     </section>
+ 
+     <section id="casos" class="section" role="region" aria-label="Casos de uso y ejemplos">
+       <div class="wrap split">
+         <div class="card">
+           <h3>Casos de uso y ejemplos</h3>
+           <ul>
+             <li>Fondos animados para videos</li>
+             <li>Visuales para sesiones de DJ</li>
+             <li>Reels y TikToks</li>
+             <li>Presentaciones llamativas</li>
+             <li>Relax visual</li>
+             <li>Arte digital</li>
+             <li>Explicación de conceptos de sonido</li>
+           </ul>
+ 
+         </div>
+ 
+         <div class="card inset">
+           <h3>Valor diferencial</h3>
+           <p>
+             A diferencia de herramientas tradicionales, esta plataforma genera
+             visualizaciones directamente desde la energía de la canción. No usa plantillas repetidas ni efectos predeterminados.
+           </p>
+         </div>
+       </div>
+     </section>
+
+     <section id="instrucciones" class="section dark" role="region" aria-label="Instrucciones de uso">
+       <div class="wrap">
+         <h2>Instrucciones de Uso</h2>
+         
+         <div class="card" style="margin-bottom: 2rem;">
+           <h3> Fuentes de Audio</h3>
+           <ul>
+             <li><strong>Demos:</strong> Haz clic en "Audio de demostración" para probar 8 canciones incluidas (Metal, Rock, Pop, Techno, Reggae, Salsa, Instrumental, Nota pura).</li>
+             <li><strong>YouTube:</strong> Pega la URL de un video de YouTube y presiona "Cargar video". La visualización usará solo el audio.</li>
+             <li><strong>Archivo local:</strong> Haz clic en "Cargar archivo" para subir tus propios MP3, WAV, OGG o M4A.</li>
+           </ul>
+         </div>
+
+         <div class="card" style="margin-bottom: 2rem;">
+           <h3> Controles del Visualizador</h3>
+           <ul>
+             <li><strong>Animaciones:</strong> Haz clic en "Tipo de animación" para elegir entre Onda, Barras, Estrellas, Puntos o Curvas.</li>
+             <li><strong>Paletas de colores:</strong> Haz clic en "Paleta de colores" para elegir entre Neón, Cálida o Fría. Los colores cambian según las frecuencias del audio (bajos → rojos/oscuros, agudos → azules/claros).</li>
+             <li><strong>Historial:</strong> Haz clic en el ícono de menú en la esquina superior izquierda para ver las últimas canciones reproducidas.</li>
+             <li><strong>Pantalla completa:</strong> Haz clic en el ícono de expandir para maximizar la visualización.</li>
+             <li><strong>Configuración:</strong> Haz clic en el engranaje para acceder a más opciones de reproducción paletas de colores.</li>
+           </ul>
+         </div>
+
+         <div class="card inset" style="background: rgba(255, 200, 100, 0.1); border-left: 4px solid #ffcc66;">
+           <h3> Nota importante sobre la carga</h3>
+           <p>
+             El sitio está alojado en un servidor gratuito que se "duerme" tras 15 minutos de inactividad. 
+             <strong>La primera visita puede tardar entre 30 y 50 segundos</strong> mientras el servidor se reactiva. 
+             Las siguientes cargas serán instantáneas (1-3 segundos). Si vas a presentar el proyecto, abre el sitio unos minutos antes.
+           </p>
+         </div>
+       </div>
+     </section>
+ 
+     <section id="cta-final" class="section hero-cta-final" role="region" aria-label="Llamado a la acción final">
+       <div class="wrap">
+         <h2>Vive la música como nunca antes.</h2>
+         <p>Sube tu canción, dale play y mira cómo se transforma en arte visual.</p>
+ 
+         <div class="hero-cta">
+           <a href= "home.html" class="btn big primary" id="startVisualizer">Crear mi visualización ahora</a>
+           <button class="btn big" id="tryDemo">Probar demo sin subir audio</button>
+         </div>
+       </div>
+     </section>
+   </main>
+ 
+   <footer id="site-footer" class="site-footer" role="contentinfo">
+     <div class="wrap footer-grid">
+       <div>
+         <h4>Desarrolladoras</h4>
+         <p><strong>Cielo Isabel Ochoa Betancur</strong><br>Ingeniería de Sonido<br><a href="mailto:cielo.ochoa251@tau.usbmed.edu.co">cielo.ochoa251@tau.usbmed.edu.co</a></p>
+ 
+         <p><strong>María Alejandra Restrepo García</strong><br>Ingeniería Multimedia<br><a href="mailto:maria.restrepo242@tau.usbmed.edu.co">maria.restrepo242@tau.usbmed.edu.co</a></p>
+       </div>
+ 
+       <div>
+         <h4>Institución</h4>
+         <p>Universidad de San Buenaventura<br>Sede Medellín<br>Facultad de Ingenierías<br>Programación 2 - Segundo Semestre 2025</p>
+       </div>
+
+ 
+       <div>
+         <h4>Tecnologías</h4>
+         <p>Desarrollado con HTML5, CSS3, JavaScript y Web Audio API</p>
+         <ul class="meta-small">
+         <li>Equipo: 02</li>
+         <li>Año: 2025</li>
+       </div>
+     </div>
+ 
+     <div class="wrap copyright">
+       <small>© 2025 Visualizador Musical Web - Universidad de San Buenaventura Medellín</small>
+     </div>
+   </footer>
+ 
+   <div id="modal-tech" class="modal" aria-hidden="true" role="dialog" aria-label="Información técnica">
+     <div class="modal-inner" role="document">
+       <button class="modal-close" id="closeModal" aria-label="Cerrar">✕</button>
+       <h3>¿Qué es el Visualizador Musical Web?</h3>
+ 
+       <p>
+         El Visualizador Musical Web es una aplicación interactiva que convierte señales de audio en representaciones gráficas dinámicas y sincronizadas.
+         Utilizando tecnologías web modernas y análisis espectral avanzado (FFT), este proyecto permite visualizar música en tiempo real a través de múltiples modos:
+         ondas, barras de frecuencia, partículas y estrellas.
+       </p>
+ 
+       <h4>Características Principales</h4>
+       <ul>
+         <li><strong>Análisis FFT:</strong> Transformada Rápida de Fourier para descomponer audio en frecuencias.</li>
+         <li><strong>4 Visualizadores:</strong> Ondas, barras espectrales, partículas y estrellas sincronizadas.</li>
+         <li><strong>Múltiples Fuentes:</strong> Carga archivos locales (MP3, WAV) o URLs.</li>
+         <li><strong>Colores Dinámicos:</strong> Mapeo de frecuencias a colores neón.</li>
+         <li><strong>Tiempo Real:</strong> Renderizado a 60 FPS con requestAnimationFrame.</li>
+         <li><strong>Gratuito:</strong> Funciona directamente en el navegador.</li>
+       </ul>
+ 
+       <h4>Tecnologías aplicadas y conceptos</h4>
+       <ul>
+         <li>HTML5, CSS3, JavaScript ES6+</li>
+         <li>Web Audio API, Canvas API</li>
+         <li>FFT, análisis espectral por bandas, beat detection</li>
+         <li>requestAnimationFrame, teoría del color (HSL)</li>
+       </ul>
+
+    
+ 
+       <div class="modal-actions">
+         <a href="home.html" class="btn primary" id=""> Acceder al Visualizador</a>
+         <button type="button" class="btn ghost" id="closeModal2">Cerrar</button>
+       </div>
+
+
+      
+     </div>
+   </div>
+
+
+   
+
+   <script src="./public/scripts/script.js"></script>
+   
+   <script>
+   // Redirigir a home.html con demo aleatorio
+   document.getElementById('demoBtn').addEventListener('click', function() {
+       window.location.href = 'home.html?demo=random';
+   });
+   
+   document.getElementById('tryDemo').addEventListener('click', function() {
+       window.location.href = 'home.html?demo=random';
+   });
+   </script>
+  
+ </body>
+ </html>
+ 

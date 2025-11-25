@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Visualizador de Música</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="public/styles/style_app.css" />
+</head>
+<body>
+    <!-- Overlay blur for historial -->
+    <div id="overlay-blur" class="overlay-blur hidden"></div>
+    <!-- Menu lateral para historial -->
+    <div id="menu-historial" class="menu-lateral">
+        <h2>Historial</h2>
+        <button id="boton-limpiar-historial" class="boton-limpiar">Limpiar</button>
+        <div id="lista-canciones">
+            <!-- Aqui se agregan las canciones -->
+        </div>
+    </div>
+
+    <!-- Boton del menu -->
+    <button id="boton-menu" class="boton-menu" aria-label="Abrir historial">☰</button>
+
+    <!-- Titulo principal -->
+    <h1 class="titulo-principal">Visualizador Musical Web</h1>
+
+    <!-- Seccion para cargar musica -->
+    <div class="seccion-cargar">
+        <p class="texto-instruccion">Pega un link de YouTube o sube un archivo MP3, WAV, OGG o M4A.</p>
+        
+        <!-- Input para link de YouTube -->
+        <div class="contenedor-input">
+            <input type="text" id="input-youtube" class="input-texto" placeholder="Pega un link directo de YouTube."/>
+            <button id="boton-cargar-youtube" class="boton-cargar">Cargar</button>
+        </div>
+
+        <!-- Input para archivo mp3 -->
+        <div class="contenedor-input">
+            <!-- Visible filename display (readonly) -->
+            <input type="text" id="display-nombre-archivo" class="input-texto" placeholder="No hay archivo seleccionado" readonly />
+            <input type="file" id="input-archivo" class="input-archivo" accept=".mp3,audio/*"/>
+            <button id="boton-cargar-archivo" class="boton-cargar">Seleccionar archivo</button>
+            <div style="position: relative; display: inline-block; z-index: 10000;">
+                <button id="boton-demo" class="boton-cargar">Probar con un demo</button>
+                <div id="menu-demos" class="menu-desplegable" aria-hidden="true">
+                    <div class="opcion-demo" data-archivo="audios demo/Instrumental Corto.wav">Instrumental Corto</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Metal.mp3">Metal</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Nota pura.wav">Nota pura</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Pop.mp3">Pop</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Reggae.mp3">Reggae</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Rock.mp3">Rock</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Salsa.mp3">Salsa</div>
+                    <div class="opcion-demo" data-archivo="audios demo/Techno.mp3">Techno</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu selector de animacion -->
+        <div class="contenedor-selector">
+            <button id="boton-selector" class="selector-animacion">Seleccione un tipo de animación.</button>
+            <div id="menu-animaciones" class="menu-desplegable" aria-hidden="true">
+                <div class="opcion-animacion" data-tipo="onda">Onda</div>
+                <div class="opcion-animacion" data-tipo="barras">Barras</div>
+                <div class="opcion-animacion" data-tipo="estrellas">Estrellas</div>
+                <div class="opcion-animacion" data-tipo="puntos">Puntos</div>
+                <div class="opcion-animacion" data-tipo="curvas">Curvas</div>
+            </div>
+        </div>
+
+        <!-- Menu selector de paleta de colores -->
+        <div class="contenedor-selector">
+            <button id="boton-selector-paleta" class="selector-animacion">Seleccione una paleta de colores.</button>
+            <div id="menu-paletas" class="menu-desplegable" aria-hidden="true">
+                <div class="opcion-paleta" data-paleta="neon">Neón</div>
+                <div class="opcion-paleta" data-paleta="calida">Cálida</div>
+                <div class="opcion-paleta" data-paleta="fria">Fría</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas para las animaciones -->
+    <div class="contenedor-canvas-barra">
+        <canvas id="lienzo-animacion" class="lienzo"></canvas>
+        
+        <!-- Barra de reproducción dentro del contenedor -->
+        <div id="barra-reproduccion" class="barra-reproduccion">
+            <!-- Barra de progreso -->
+            <div class="contenedor-progreso">
+                <div id="progreso-audio" class="progreso-audio"></div>
+            </div>
+            
+            <!-- Controles y detalles -->
+            <div class="controles-reproduccion-moderna">
+                <!-- Play, Pause, Stop -->
+                <div class="grupo-botones">
+                    <button id="boton-stop" class="boton-control boton-stop" title="Parar">■</button>
+                    <button id="boton-play" class="boton-control boton-play" title="Reproducir">▶</button>
+                    <button id="boton-pausa" class="boton-control boton-pausa" title="Pausa">❚❚</button>
+                </div>
+
+                <!-- Tiempo -->
+                <div class="tiempo-audio">
+                    <span id="tiempo-actual">0:00</span> / <span id="tiempo-total">0:00</span>
+                </div>
+
+                <!-- Espaciador -->
+                <div class="espaciador"></div>
+
+                <!-- Botón fullscreen en la barra -->
+                <button id="btn-fullscreen" class="btn-fullscreen-barra" title="Pantalla completa" aria-label="Pantalla completa">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4H9V2H2V9H4V4ZM15 2V4H20V9H22V2H15ZM20 15H22V22H15V20H20V15ZM4 15V20H9V22H2V15H4Z" fill="currentColor"/>
+                    </svg>
+                </button>
+
+                <!-- Botón engranaje (Settings) -->
+                <div class="contenedor-settings">
+                    <button id="boton-settings" class="boton-settings" title="Configuración">⚙️</button>
+                    <div id="menu-settings" class="menu-settings" aria-hidden="true">
+                        <div class="opcion-settings" data-opcion="velocidad">
+                            <span>Velocidad de reproducción</span>
+                            <span class="valor-velocidad">1x</span>
+                        </div>
+                        <div class="opcion-settings" data-opcion="animacion">
+                            <span>Cambiar tipo de animación</span>
+                            <span class="flecha-submenu">›</span>
+                        </div>
+                        <div id="submenu-animaciones" class="submenu-animaciones" aria-hidden="true">
+                            <div class="opcion-submenu" data-tipo="onda">Onda</div>
+                            <div class="opcion-submenu" data-tipo="barras">Barras</div>
+                            <div class="opcion-submenu" data-tipo="estrellas">Estrellas</div>
+                            <div class="opcion-submenu" data-tipo="puntos">Puntos</div>
+                            <div class="opcion-submenu" data-tipo="curvas">Curvas</div>
+                        </div>
+                        <div class="opcion-settings" data-opcion="paleta">
+                            <span>Cambiar paleta de colores</span>
+                            <span class="flecha-submenu">›</span>
+                        </div>
+                        <div id="submenu-paletas" class="submenu-animaciones" aria-hidden="true">
+                            <div class="opcion-submenu-paleta" data-paleta="neon">Neón</div>
+                            <div class="opcion-submenu-paleta" data-paleta="calida">Cálida</div>
+                            <div class="opcion-submenu-paleta" data-paleta="fria">Fría</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Texto de reproduccion -->
+    <div class="texto-reproduciendo">
+        <p id="texto-cancion-actual">Reproduciendo: <span id="nombre-actual">—</span></p>
+    </div>
+
+    <!-- Elemento de audio oculto -->
+    <audio id="reproductor-audio" crossorigin="anonymous"></audio>
+
+    <script src="public/scripts/app.js"></script>
+    <script>
+    // Font and color settings for Apple/tech style
+    document.body.style.fontFamily = 'Inter, Space Grotesk, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif';
+    document.body.style.background = '#0a0615';
+    document.body.style.color = '#e8fbff';
+    </script>
+</body>
+</html>

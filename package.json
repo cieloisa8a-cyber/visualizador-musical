@@ -1,0 +1,15 @@
+{
+  "name": "visualizador-musical-web",
+  "version": "1.0.0",
+  "description": "Visualizador Musical Web con soporte de YouTube",
+  "main": "public/server/server.js",
+  "scripts": {
+    "start": "node public/server/server.js",
+    "install-server": "cd public/server && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Cielo Isabel Ochoa Betancur & María Alejandra Restrepo García",
+  "license": "MIT"
+}
