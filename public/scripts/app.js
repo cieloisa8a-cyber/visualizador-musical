@@ -1,5 +1,4 @@
 // Elementos del DOM
-const botonCargarYoutube = document.getElementById('boton-cargar-youtube');
 const reproductorAudio = document.getElementById('reproductor-audio');
 const lienzo = document.getElementById('lienzo-animacion');
 const contexto = lienzo.getContext('2d');
@@ -16,7 +15,6 @@ const inputArchivo = document.getElementById('input-archivo');
 const botonCargarArchivo = document.getElementById('boton-cargar-archivo');
 const botonDemo = document.getElementById('boton-demo');
 const menuDemos = document.getElementById('menu-demos');
-const inputYoutube = document.getElementById('input-youtube');
 const displayNombreArchivo = document.getElementById('display-nombre-archivo');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 const botonSettings = document.getElementById('boton-settings');
@@ -286,119 +284,6 @@ botonCargarArchivo.addEventListener('click', () => inputArchivo.click());
 
 
 // Cargar audio desde YouTube 
-botonCargarYoutube.addEventListener("click", async () => {
-    const url = inputYoutube.value.trim();
-    if (!url) {
-        alert("Por favor, pega un enlace de YouTube.");
-        return;
-    }
-
-    // Detectar si estamos en producción o local
-    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-        ? 'http://localhost:3001' 
-        : window.location.origin;
-
-    // Mostrar indicador de carga
-    displayNombreArchivo.value = "Cargando...";
-    botonCargarYoutube.disabled = true;
-    botonCargarYoutube.textContent = "Cargando...";
-
-    // Limpia estados previos
-    try {
-        reproductorAudio.pause();
-    } catch (e) {}
-    reproductorAudio.currentTime = 0;
-    detenerAnimacion();
-    limpiarLienzo();
-
-    try {
-        // Obtener información del video primero
-        const infoResp = await fetch(`${API_URL}/youtube/info?url=` + encodeURIComponent(url));
-        
-        // Leer respuesta como JSON incluso si hay error
-        const responseData = await infoResp.json();
-        
-        if (!infoResp.ok) {
-            // El servidor devolvió un error, usar el mensaje específico
-            throw new Error(responseData.error || 'Error del servidor');
-        }
-
-        const videoInfo = responseData;
-        const titulo = videoInfo.title || "YouTube Audio";
-
-        // Mostrar el título en el campo de nombre de archivo
-        displayNombreArchivo.value = titulo;
-        nombreCancionActual = titulo;
-        textoNombreActual.textContent = titulo;
-
-        // Usar endpoint de streaming directo
-        const streamEndpoint = `${API_URL}/youtube/stream?url=` + encodeURIComponent(url);
-        
-        console.log('🎵 Configurando audio con streaming del servidor...');
-        
-        // Configurar reproductor de audio
-        reproductorAudio.crossOrigin = 'anonymous';
-        reproductorAudio.src = streamEndpoint;
-        
-        // Marcar como cargado (el stream se cargará cuando se reproduzca)
-        archivoCargado = true;
-
-        // Conectar WebAudio cuando esté listo
-        reproductorAudio.addEventListener('loadedmetadata', () => {
-            console.log('✅ Metadatos cargados, inicializando Web Audio API...');
-            configurarAudio().then(() => {
-                console.log('✅ Web Audio API configurado');
-            }).catch(err => {
-                console.error('❌ Error configurando Web Audio:', err);
-            });
-        }, { once: true });
-
-        // Agregar al historial
-        agregarAlHistorial(titulo, tipoAnimacion || "En espera");
-
-        // Verificar y habilitar botones según configuración actual
-        verificarYHabilitarPlay();
-        botonPausa.disabled = true;
-
-        // Restaurar botón de carga
-        botonCargarYoutube.disabled = false;
-        botonCargarYoutube.textContent = "Cargar";
-
-        console.log('✅ Video de YouTube configurado:', titulo);
-
-    } catch (e) {
-        console.error('❌ Error cargando audio de YouTube:', e);
-        displayNombreArchivo.value = "No hay archivo seleccionado";
-        
-        // Mensaje más específico según el error
-        let mensaje = "No se pudo cargar el video de YouTube.\n\n";
-        
-        if (e.message && (e.message.includes('429') || e.message.includes('temporalmente'))) {
-            mensaje += "⚠️ YouTube está bloqueando las peticiones desde este servidor.\n\n";
-            mensaje += "💡 Soluciones:\n";
-            mensaje += "1. Usa los 8 demos incluidos (botón 'Probar con un demo')\n";
-            mensaje += "2. Carga un archivo MP3/WAV de tu computadora\n";
-            mensaje += "3. YouTube funciona en la versión local del proyecto";
-        } else {
-            mensaje += "Motivo: " + e.message + "\n\n";
-            mensaje += "💡 Alternativas:\n";
-            mensaje += "• Verifica que el enlace sea válido\n";
-            mensaje += "• El video no esté restringido por región\n";
-            mensaje += "• Usa los demos o archivos locales";
-        }
-        
-        alert(mensaje);
-        
-        // Restaurar botón de carga
-        botonCargarYoutube.disabled = false;
-        botonCargarYoutube.textContent = "Cargar";
-    }
-});
-
-
-
-
-
 // Botón para mostrar menú de demos
 botonDemo.addEventListener('click', () => {
     const mostrar = menuDemos.classList.toggle('mostrar');
