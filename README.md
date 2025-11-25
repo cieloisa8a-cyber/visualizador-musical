@@ -105,7 +105,6 @@ landing page/
 - JavaScript ES6+
 - CSS3 (Glassmorphism)
 - Node.js + Express
-- @distube/ytdl-core
 
 ##  Licencia
 
