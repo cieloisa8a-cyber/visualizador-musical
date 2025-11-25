@@ -1,14 +1,12 @@
 {
-    "name": "visualizador-youtube",
+    "name": "visualizador-musical-server",
     "version": "1.0.0",
-    "description": "Servidor para streaming de audio de YouTube",
+    "description": "Servidor para Visualizador Musical Web",
     "main": "server.js",
     "scripts": {
         "start": "node server.js"
     },
     "dependencies": {
-        "@distube/ytdl-core": "^4.16.12",
-        "axios": "^1.6.0",
         "cors": "^2.8.5",
         "express": "^4.21.2"
     }
