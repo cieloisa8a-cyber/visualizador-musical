@@ -1,4 +1,4 @@
-# 🚀 Comandos Rápidos
+#  Comandos Rápidos
 
 ## Para ejecutar localmente:
 ```powershell

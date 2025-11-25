@@ -44,7 +44,7 @@ http://localhost:3001
 ```
 
 <<<<<<< HEAD
-## 🌐 Despliegue en Producción
+##  Despliegue en Producción
 =======
 ##  Despliegue en Producción (Render.com)
 >>>>>>> 3fab5ee7bdd631144f7590a0be51a711f7a279ac
@@ -105,7 +105,6 @@ landing page/
 - JavaScript ES6+
 - CSS3 (Glassmorphism)
 - Node.js + Express
-- @distube/ytdl-core
 
 ##  Licencia
 
