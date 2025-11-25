@@ -165,10 +165,35 @@
          <div class="section-ctas">
            <!-- <button class="btn primary">Lo quiero probar</button> -->
            <a href="home.html" class="btn primary" id="crearVisual">Crear mi visualización ahora</a>
-           <button class="btn">Compartir con un amigo</button>
+           <button class="btn" id="btn-compartir">Compartir con un amigo</button>
          </div>
        </div>
      </section>
+
+     <!-- Modal para compartir -->
+     <div id="modal-compartir" class="modal" style="display: none;" aria-hidden="true" role="dialog" aria-label="Compartir proyecto">
+       <div class="modal-inner" role="document" style="max-width: 500px;">
+         <button class="modal-close" id="cerrar-compartir" aria-label="Cerrar">✕</button>
+         <h3>Compartir Visualizador Musical</h3>
+         <p style="margin-bottom: 1.5rem; color: #94a3b8;">Copia el enlace y compártelo con tus amigos:</p>
+         
+         <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
+           <input type="text" id="input-link-compartir" readonly value="https://visualizador-musical.onrender.com" 
+                  style="flex: 1; padding: 12px; border: 2px solid rgba(155, 107, 255, 0.3); border-radius: 8px; background: rgba(15, 23, 42, 0.8); color: white; font-family: 'Inter', sans-serif; font-size: 14px;" />
+           <button id="btn-copiar-link" class="btn primary" style="white-space: nowrap; padding: 12px 24px;">
+             Copiar
+           </button>
+         </div>
+         
+         <p id="mensaje-copiado" style="color: #4ade80; font-size: 14px; margin: 0; opacity: 0; transition: opacity 0.3s;">
+           ✓ ¡Enlace copiado al portapapeles!
+         </p>
+
+         <div class="modal-actions" style="margin-top: 1.5rem;">
+           <button type="button" class="btn ghost" id="cerrar-compartir-2">Cerrar</button>
+         </div>
+       </div>
+     </div>
  
      <section id="publico" class="section" role="region" aria-label="Público objetivo">
        <div class="wrap">
@@ -340,6 +365,56 @@
    
    document.getElementById('tryDemo').addEventListener('click', function() {
        window.location.href = 'home.html?demo=random';
+   });
+
+   // Funcionalidad de compartir
+   const btnCompartir = document.getElementById('btn-compartir');
+   const modalCompartir = document.getElementById('modal-compartir');
+   const cerrarCompartir = document.getElementById('cerrar-compartir');
+   const cerrarCompartir2 = document.getElementById('cerrar-compartir-2');
+   const btnCopiarLink = document.getElementById('btn-copiar-link');
+   const inputLink = document.getElementById('input-link-compartir');
+   const mensajeCopiado = document.getElementById('mensaje-copiado');
+
+   btnCompartir.addEventListener('click', () => {
+       modalCompartir.style.display = 'flex';
+       modalCompartir.setAttribute('aria-hidden', 'false');
+   });
+
+   cerrarCompartir.addEventListener('click', () => {
+       modalCompartir.style.display = 'none';
+       modalCompartir.setAttribute('aria-hidden', 'true');
+       mensajeCopiado.style.opacity = '0';
+   });
+
+   cerrarCompartir2.addEventListener('click', () => {
+       modalCompartir.style.display = 'none';
+       modalCompartir.setAttribute('aria-hidden', 'true');
+       mensajeCopiado.style.opacity = '0';
+   });
+
+   btnCopiarLink.addEventListener('click', async () => {
+       try {
+           await navigator.clipboard.writeText(inputLink.value);
+           mensajeCopiado.style.opacity = '1';
+           btnCopiarLink.textContent = '✓ Copiado';
+           
+           setTimeout(() => {
+               mensajeCopiado.style.opacity = '0';
+               btnCopiarLink.textContent = 'Copiar';
+           }, 2000);
+       } catch (err) {
+           // Fallback para navegadores antiguos
+           inputLink.select();
+           document.execCommand('copy');
+           mensajeCopiado.style.opacity = '1';
+           btnCopiarLink.textContent = '✓ Copiado';
+           
+           setTimeout(() => {
+               mensajeCopiado.style.opacity = '0';
+               btnCopiarLink.textContent = 'Copiar';
+           }, 2000);
+       }
    });
    </script>
   
