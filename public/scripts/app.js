@@ -314,11 +314,16 @@ botonCargarYoutube.addEventListener("click", async () => {
     try {
         // Obtener información del video primero
         const infoResp = await fetch(`${API_URL}/youtube/info?url=` + encodeURIComponent(url));
+        
+        // Leer respuesta como JSON incluso si hay error
+        const responseData = await infoResp.json();
+        
         if (!infoResp.ok) {
-            throw new Error('No se pudo obtener información del video');
+            // El servidor devolvió un error, usar el mensaje específico
+            throw new Error(responseData.error || 'Error del servidor');
         }
 
-        const videoInfo = await infoResp.json();
+        const videoInfo = responseData;
         const titulo = videoInfo.title || "YouTube Audio";
 
         // Mostrar el título en el campo de nombre de archivo
@@ -367,17 +372,19 @@ botonCargarYoutube.addEventListener("click", async () => {
         
         // Mensaje más específico según el error
         let mensaje = "No se pudo cargar el video de YouTube.\n\n";
-        if (e.message && e.message.includes('429')) {
-            mensaje += "YouTube está limitando las peticiones.\n\n";
-            mensaje += "💡 Alternativas:\n";
-            mensaje += "• Usa los 8 demos incluidos (botón 'Probar con un demo')\n";
-            mensaje += "• Carga un archivo MP3/WAV local\n";
-            mensaje += "• Intenta de nuevo en 5-10 minutos";
+        
+        if (e.message && (e.message.includes('429') || e.message.includes('temporalmente'))) {
+            mensaje += "⚠️ YouTube está bloqueando las peticiones desde este servidor.\n\n";
+            mensaje += "💡 Soluciones:\n";
+            mensaje += "1. Usa los 8 demos incluidos (botón 'Probar con un demo')\n";
+            mensaje += "2. Carga un archivo MP3/WAV de tu computadora\n";
+            mensaje += "3. YouTube funciona en la versión local del proyecto";
         } else {
-            mensaje += "Verifica que:\n";
-            mensaje += "1. El enlace sea válido\n";
-            mensaje += "2. El video esté disponible en tu región\n";
-            mensaje += "3. No sea contenido restringido";
+            mensaje += "Motivo: " + e.message + "\n\n";
+            mensaje += "💡 Alternativas:\n";
+            mensaje += "• Verifica que el enlace sea válido\n";
+            mensaje += "• El video no esté restringido por región\n";
+            mensaje += "• Usa los demos o archivos locales";
         }
         
         alert(mensaje);
