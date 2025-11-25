@@ -319,7 +319,7 @@ input[type="file"].input-archivo:focus {
 /* Botón Cargar - Apple/tech purple gradient */
 .boton-cargar {
     padding: 12px 24px;
-    background: linear-gradient(90deg, #fa0101 0%, #fc1414 100%);
+    background: linear-gradient(90deg, #9b6bff 0%, #4c6cff 100%);
     border: none;
     border-radius: var(--radius);
     color: #fff;
