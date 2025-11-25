@@ -43,35 +43,29 @@ npm start
 http://localhost:3001
 ```
 
-## 🌐 Despliegue en Producción (Render.com)
+## 🌐 Despliegue en Producción
 
-### Paso 1: Subir a GitHub
+El proyecto está configurado para desplegarse en Render.com (plan gratuito).
 
+**Nota**: El plan gratuito "duerme" el servidor después de 15 minutos de inactividad. La primera carga puede tardar 30-50 segundos mientras reactiva, después funciona normal.
+
+### Subir a GitHub
 ```bash
 git init
 git add .
-git commit -m "Initial commit - Visualizador Musical Web"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/visualizador-musical.git
+git commit -m "Initial commit"
 git push -u origin main
 ```
 
-### Paso 2: Configurar Render
+### Desplegar en Render
+1. Crear cuenta en render.com
+2. New Web Service → conectar repositorio
+3. Configurar:
+   - Build: `npm run install-server`
+   - Start: `npm start`
+4. Deploy
 
-1. Ir a [Render.com](https://render.com) y crear cuenta
-2. Clic en "New +" → "Web Service"
-3. Conectar tu repositorio de GitHub
-4. Configuración:
-   - **Name**: visualizador-musical
-   - **Environment**: Node
-   - **Build Command**: `npm run install-server`
-   - **Start Command**: `npm start`
-   - **Plan**: Free
-
-5. Clic en "Create Web Service"
-
-¡Listo! Render te dará una URL pública como:  
-`https://visualizador-musical.onrender.com`
+URL pública: `https://TU-APP.onrender.com`
 
 ## 📁 Estructura del Proyecto
 

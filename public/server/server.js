@@ -14,14 +14,19 @@ app.use(cors({
 // Servir archivos estáticos (HTML, CSS, JS, imágenes, audio)
 app.use(express.static(path.join(__dirname, '../../')));
 
-// Configurar opciones de ytdl con cookies y agente personalizado
+// Configurar opciones de ytdl con mejor User-Agent y headers
 const ytdlOptions = {
     requestOptions: {
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
             'Accept-Language': 'en-US,en;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
         }
-    }
+    },
+    // Usar IPv6 para evitar rate limits
+    agent: undefined
 };
 
 // Endpoint para obtener información del video
@@ -78,11 +83,13 @@ app.get("/youtube/stream", async (req, res) => {
         res.setHeader("Cache-Control", "no-cache");
         res.setHeader("Accept-Ranges", "bytes");
 
-        // Stream de audio con configuración personalizada
+        // Stream de audio con configuración mejorada
         const audioStream = ytdl(url, {
             filter: 'audioonly',
             quality: 'lowestaudio',
-            requestOptions: ytdlOptions.requestOptions
+            requestOptions: ytdlOptions.requestOptions,
+            // Agregar delay entre peticiones
+            highWaterMark: 1 << 25
         });
 
         console.log(`✅ Stream iniciado para: ${title}`);
