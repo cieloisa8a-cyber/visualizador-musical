@@ -1,8 +1,8 @@
-# 🎵 Visualizador Musical Web
+#  Visualizador Musical Web
 
 Aplicación web interactiva que transforma música en arte visual usando Web Audio API y Canvas.
 
-## 👩‍💻 Desarrolladoras
+##  Desarrolladoras
 
 - **Cielo Isabel Ochoa Betancur** - Ingeniería de Sonido
 - **María Alejandra Restrepo García** - Ingeniería Multimedia
@@ -10,17 +10,17 @@ Aplicación web interactiva que transforma música en arte visual usando Web Aud
 Universidad de San Buenaventura - Medellín  
 Programación 2 - Segundo Semestre 2025
 
-## ✨ Características
+##  Características
 
-- 🎨 **5 Visualizaciones**: Onda, Barras, Estrellas, Puntos, Curvas
-- 🎭 **3 Paletas de Colores**: Neón, Cálida, Fría (organizadas por frecuencias)
-- 🎬 **Soporte YouTube**: Carga directa de videos de YouTube
-- 📁 **Archivos locales**: MP3 y WAV
-- 🎮 **8 Demos**: Canciones pregrabadas de diferentes géneros
-- ⚙️ **Controles**: Velocidad de reproducción, pantalla completa
-- 📜 **Historial**: Guarda tus reproducciones
+-  **5 Visualizaciones**: Onda, Barras, Estrellas, Puntos, Curvas
+-  **3 Paletas de Colores**: Neón, Cálida, Fría (organizadas por frecuencias)
+-  **Soporte YouTube**: Carga directa de videos de YouTube
+-  **Archivos locales**: MP3 y WAV
+-  **8 Demos**: Canciones pregrabadas de diferentes géneros
+-  **Controles**: Velocidad de reproducción, pantalla completa
+-  **Historial**: Guarda tus reproducciones
 
-## 🚀 Despliegue Local
+##  Despliegue Local
 
 ### Requisitos
 - Node.js 18 o superior
@@ -43,7 +43,11 @@ npm start
 http://localhost:3001
 ```
 
+<<<<<<< HEAD
 ## 🌐 Despliegue en Producción
+=======
+##  Despliegue en Producción (Render.com)
+>>>>>>> 3fab5ee7bdd631144f7590a0be51a711f7a279ac
 
 El proyecto está configurado para desplegarse en Render.com (plan gratuito).
 
@@ -67,7 +71,7 @@ git push -u origin main
 
 URL pública: `https://TU-APP.onrender.com`
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 landing page/
@@ -94,7 +98,7 @@ landing page/
         └── package.json   # Dependencias del servidor
 ```
 
-## 🛠️ Tecnologías
+##  Tecnologías
 
 - HTML5 Canvas
 - Web Audio API (FFT)
@@ -103,7 +107,7 @@ landing page/
 - Node.js + Express
 - @distube/ytdl-core
 
-## 📝 Licencia
+##  Licencia
 
 MIT License - Proyecto académico
 
