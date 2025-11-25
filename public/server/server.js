@@ -14,8 +14,12 @@ app.use(cors({
 // Servir archivos estáticos (HTML, CSS, JS, imágenes, audio)
 app.use(express.static(path.join(__dirname, '../../')));
 
-// Configurar opciones de ytdl con mejor User-Agent y headers
+// Crear agente personalizado con cookies para evitar rate limits
+const agent = ytdl.createAgent();
+
+// Configurar opciones de ytdl con agente personalizado y headers mejorados
 const ytdlOptions = {
+    agent,
     requestOptions: {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -23,10 +27,12 @@ const ytdlOptions = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Upgrade-Insecure-Requests': '1'
         }
-    },
-    // Usar IPv6 para evitar rate limits
-    agent: undefined
+    }
 };
 
 // Endpoint para obtener información del video
@@ -40,7 +46,22 @@ app.get("/youtube/info", async (req, res) => {
 
         console.log(`🔍 Obteniendo info de: ${url}`);
 
-        const info = await ytdl.getInfo(url, ytdlOptions);
+        // Intentar con reintentos en caso de error 429
+        let retries = 3;
+        let info;
+        
+        while (retries > 0) {
+            try {
+                info = await ytdl.getInfo(url, ytdlOptions);
+                break;
+            } catch (err) {
+                retries--;
+                if (retries === 0) throw err;
+                console.log(`⚠️ Reintentando... (${retries} intentos restantes)`);
+                await new Promise(resolve => setTimeout(resolve, 2000)); // esperar 2 segundos
+            }
+        }
+
         const title = info.videoDetails.title || "YouTube Audio";
         const duration = info.videoDetails.lengthSeconds || 0;
         const thumbnail = info.videoDetails.thumbnails?.[0]?.url || "";
@@ -55,7 +76,14 @@ app.get("/youtube/info", async (req, res) => {
 
     } catch (err) {
         console.error("❌ Error obteniendo info de YouTube:", err.message);
-        res.status(500).json({ error: "No se pudo obtener información del video: " + err.message });
+        
+        if (err.message.includes('429')) {
+            res.status(429).json({ 
+                error: "YouTube está limitando las peticiones. Intenta de nuevo en unos minutos o usa un archivo local/demo." 
+            });
+        } else {
+            res.status(500).json({ error: "No se pudo obtener información del video: " + err.message });
+        }
     }
 });
 
